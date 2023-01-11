@@ -2,8 +2,44 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 
 export const typeDefs = `#graphql
-  type Query {
-    cars: [Car!]!
+ type Query {
+    hello: String!
+    car(id: ID!): Car!
+  }
+  type Mutation {
+    groupDelete(collectionId: ID!)
+    groupPublish(collectionId: ID!)
+    groupUnpublish(collectionId: ID!)
+    groupAddProducts(collectionId: ID!, productId: ID!)
+    groupRemoveProducts(collectionId: ID!, productId: ID!)
+    groupCreate(
+      groupInput: GroupInput!
+    )
+    groupUpdate(
+      groupId: ID!
+      groupInput: GroupInput!
+    ): GroupUpdatePayload
+  }
+
+  type GroupUpdatePayload {
+    group: Group
+    userErrors: [UserErrors]!
+  }
+
+  type UserErrors {
+    message: String!
+    field: [String!]!
+  }
+
+  input GroupInput {
+    name: String
+    image: ImageInput
+    description: String
+    featureSet: GroupFeatureFields
+  }
+
+  input ImageInput {
+    url: String!
   }
 
   type Car {
@@ -12,33 +48,36 @@ export const typeDefs = `#graphql
     make: String!
   }
 
-  type ManualGroup {
+  type Group {
     id: ID!
+    featureSet: GroupFeatureSet!
+    hasCar(id: ID!): Boolean!
+    cars(skip: Int!, take: Int!): [Car!]!
     name: String!
-    imageId: ID!
-    bodyHtml: String!
-    memberships: [GroupMembership!]!
+    image: Image!
+    description: String!
   }
 
-  type AutomaticGroup {
+  type Image {
     id: ID!
-    name: String!
-    imageId: ID!
-    bodyHtml: String!
-    memberships: [GroupMembership!]!
-    feature: [AutomaticGroupFeatures!]!
-    # Whether we combine the features together or not
-    # For example: color black + electric car
-    applyFeaturesSeperately: Boolean!
+    url: String!
   }
 
-  type AutomaticGroupFeatures {
-    column: String!
+  type GroupFeatureSet {
+    features: [GroupFeatures!]!
+    applyFeaturesSeparately: Boolean!
   }
 
-  type GroupMembership {
-    groupId: ID!
-    carId: ID!
+  type GroupFeature {
+    feature: GroupFeatureFields!
+  }
+  
+  enum GroupFeatureFields {
+    INCLINE_ENGINE
+    FOUR_CYLINDER_ENGINE
+    TWIN_CYLUNDER_ENGINE
+    RED_PAINT
+    BLACK_PAINT
   }
 `;
 
