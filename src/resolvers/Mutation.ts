@@ -67,8 +67,38 @@ export default {
     });
 
     return {
-      userErrors: [{ message: "" }],
+      userErrors: [],
       post: updatedPost,
+    };
+  },
+
+  postDelete: async (
+    _: any,
+    { postId }: { postId: string },
+    { prisma }: Context
+  ): Promise<PostPayloadType> => {
+    const existingPost = await prisma.post.findUnique({
+      where: {
+        id: Number(postId),
+      },
+    });
+
+    if (!existingPost) {
+      return {
+        userErrors: [{ message: "Post does not exist" }],
+        post: null,
+      };
+    }
+
+    await prisma.post.delete({
+      where: {
+        id: Number(postId),
+      },
+    });
+
+    return {
+      userErrors: [],
+      post: existingPost,
     };
   },
 };
