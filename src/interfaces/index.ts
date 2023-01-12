@@ -29,7 +29,7 @@ interface SignUpArgs {
 
 interface UserPayload {
   userErrors: Array<{ message: string }>;
-  user: null;
+  token: string | null;
 }
 
 export { Context, PostArgs, PostPayload, SignUpArgs, UserPayload };
