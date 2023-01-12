@@ -20,4 +20,11 @@ interface PostPayloadType {
   post: null | Post;
 }
 
-export { Context, PostArgs, PostPayloadType };
+interface SignUpArgs {
+  email: string;
+  name: string;
+  bio: string;
+  password: string;
+}
+
+export { Context, PostArgs, PostPayloadType, SignUpArgs };

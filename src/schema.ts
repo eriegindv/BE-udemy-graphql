@@ -7,6 +7,7 @@ export const typeDefs = `#graphql
     postCreate(post: PostInput!): PostPayload!
     postUpdate(postId: ID!, post: PostInput!): PostPayload!
     postDelete(postId: ID!): PostPayload!
+    signup(email: String!, password: String!, name: String!, bio: String!): User
   }
 
   type Post {
