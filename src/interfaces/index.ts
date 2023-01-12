@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Post, Prisma, PrismaClient } from "@prisma/client";
 
 interface Context {
   prisma: PrismaClient<
@@ -13,4 +13,9 @@ interface PostCreateArgs {
   content: string;
 }
 
-export { Context, PostCreateArgs };
+interface PostPayloadType {
+  userErrors: Array<{ message: string }>;
+  post: null | Post;
+}
+
+export { Context, PostCreateArgs, PostPayloadType };
