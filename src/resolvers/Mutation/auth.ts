@@ -9,7 +9,7 @@ const ONE_HOUR = 60 * 60 * 1000;
 export default {
   signup: async (
     _: any,
-    { email, bio, name, password }: SignUpArgs,
+    { credentials: { email, password }, bio, name }: SignUpArgs,
     { prisma }: Context
   ): Promise<UserPayload> => {
     const isEmail = validator.isEmail(email);
@@ -39,5 +39,41 @@ export default {
       userErrors: [],
       token,
     };
+  },
+
+  signin: async (
+    _: any,
+    { credentials: { email, password } }: SignUpArgs,
+    { prisma }: Context
+  ): Promise<UserPayload> => {
+    if (!email || !password)
+      return {
+        userErrors: [{ message: "Email and password are required" }],
+        token: null,
+      };
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user)
+      return {
+        userErrors: [{ message: "Invalid credentials" }],
+        token: null,
+      };
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return {
+        userErrors: [{ message: "Invalid credentials" }],
+        token: null,
+      };
+
+    const token = jwt.sign({ email: user.email, userId: user.id }, JWT_SECRET, {
+      expiresIn: ONE_HOUR,
+    });
+
+    return { userErrors: [], token };
   },
 };
