@@ -27,6 +27,10 @@ export default {
     const user = await prisma.user.create({
       data: { email, name, password: hashedPassword, updatedAt: new Date() },
     });
+    await prisma.profile.create({
+      data: { userId: user.id, bio, updatedAt: new Date() },
+    });
+
     const token = jwt.sign({ userId: user.id, email }, JWT_SECRET, {
       expiresIn: ONE_HOUR,
     });
