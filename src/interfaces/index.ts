@@ -15,7 +15,7 @@ interface PostArgs {
   };
 }
 
-interface PostPayloadType {
+interface PostPayload {
   userErrors: Array<{ message: string }>;
   post: null | Post;
 }
@@ -27,4 +27,9 @@ interface SignUpArgs {
   password: string;
 }
 
-export { Context, PostArgs, PostPayloadType, SignUpArgs };
+interface UserPayload {
+  userErrors: Array<{ message: string }>;
+  user: null;
+}
+
+export { Context, PostArgs, PostPayload, SignUpArgs, UserPayload };

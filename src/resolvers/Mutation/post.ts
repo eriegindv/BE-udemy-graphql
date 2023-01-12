@@ -1,11 +1,11 @@
-import { Context, PostArgs, PostPayloadType } from "~/interfaces";
+import { Context, PostArgs, PostPayload } from "~/interfaces";
 
 export default {
   postCreate: async (
     _: any,
     { post }: PostArgs,
     { prisma }: Context
-  ): Promise<PostPayloadType> => {
+  ): Promise<PostPayload> => {
     const { title, content } = post;
     if (!title || !content) {
       return {
@@ -37,7 +37,7 @@ export default {
     _: any,
     { postId, post }: { postId: string; post: PostArgs["post"] },
     { prisma }: Context
-  ): Promise<PostPayloadType> => {
+  ): Promise<PostPayload> => {
     const { title, content } = post;
 
     if (!title && !content) {
@@ -76,7 +76,7 @@ export default {
     _: any,
     { postId }: { postId: string },
     { prisma }: Context
-  ): Promise<PostPayloadType> => {
+  ): Promise<PostPayload> => {
     const existingPost = await prisma.post.findUnique({
       where: {
         id: Number(postId),
