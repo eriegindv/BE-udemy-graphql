@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import validator from "validator";
 import { Context, SignUpArgs, UserPayload } from "~/interfaces";
 
@@ -17,8 +18,10 @@ export default {
     if (!name || !bio)
       return { userErrors: [{ message: "Invalid name or bio" }], user: null };
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const createdUser = await prisma.user.create({
-      data: { email, name, password, updatedAt: new Date() },
+      data: { email, name, password: hashedPassword, updatedAt: new Date() },
     });
 
     return {
