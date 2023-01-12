@@ -8,9 +8,11 @@ interface Context {
   >;
 }
 
-interface PostCreateArgs {
-  title: string;
-  content: string;
+interface PostArgs {
+  post: {
+    title?: string;
+    content?: string;
+  };
 }
 
 interface PostPayloadType {
@@ -18,4 +20,4 @@ interface PostPayloadType {
   post: null | Post;
 }
 
-export { Context, PostCreateArgs, PostPayloadType };
+export { Context, PostArgs, PostPayloadType };
