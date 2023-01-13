@@ -41,6 +41,14 @@ interface ProfileParentType {
   userId: number;
 }
 
+interface PostParentType {
+  authorId: number;
+}
+
+interface UserParentType {
+  id: number;
+}
+
 export {
   Context,
   PostArgs,
@@ -48,4 +56,6 @@ export {
   SignUpArgs,
   UserPayload,
   ProfileParentType,
+  PostParentType,
+  UserParentType,
 };

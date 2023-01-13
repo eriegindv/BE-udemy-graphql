@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { PrismaClient } from "@prisma/client";
-import { Mutation, Profile, Query } from "./resolvers";
+import { Mutation, Post, Profile, Query, User } from "./resolvers";
 import { typeDefs } from "./schema";
 import { getUserFromToken } from "./utils";
 
@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers: { Query, Mutation, Profile },
+  resolvers: { Query, Mutation, Profile, Post, User },
 });
 
 const start = async () => {
