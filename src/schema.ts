@@ -7,6 +7,8 @@ export const typeDefs = `#graphql
     postCreate(post: PostInput!): PostPayload!
     postUpdate(postId: ID!, post: PostInput!): PostPayload!
     postDelete(postId: ID!): PostPayload!
+    postPublish(postId: ID!): PostPayload!
+    postUnpublish(postId: ID!): PostPayload!
     signup(credentials: CredentialInput!, name: String!, bio: String!): AuthPayload
     signin(credentials: CredentialInput!): AuthPayload
   }
