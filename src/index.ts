@@ -5,7 +5,7 @@ import { Mutation, Post, Profile, Query, User } from "./resolvers";
 import { typeDefs } from "./schema";
 import { getUserFromToken } from "./utils";
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 const server = new ApolloServer({
   typeDefs,
