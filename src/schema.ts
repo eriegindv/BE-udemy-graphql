@@ -2,6 +2,7 @@ export const typeDefs = `#graphql
   type Query {
     me: User
     posts: [Post!]!
+    profile(userId: ID!): Profile
   }
 
   type Mutation {
@@ -27,7 +28,6 @@ export const typeDefs = `#graphql
     id: ID!
     name: String!
     email: String!
-    profile: Profile!
     posts: [Post!]!
   }
 

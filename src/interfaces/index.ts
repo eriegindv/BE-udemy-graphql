@@ -35,4 +35,17 @@ interface UserPayload {
   token: string | null;
 }
 
-export { Context, PostArgs, PostPayload, SignUpArgs, UserPayload };
+interface ProfileParentType {
+  id: number;
+  bio: string;
+  userId: number;
+}
+
+export {
+  Context,
+  PostArgs,
+  PostPayload,
+  SignUpArgs,
+  UserPayload,
+  ProfileParentType,
+};
