@@ -1,11 +1,23 @@
 import { Context, PostArgs, PostPayload } from "~/interfaces";
+import { canUserMutatePost } from "~/utils";
 
 export default {
   postCreate: async (
     _: any,
     { post }: PostArgs,
-    { prisma }: Context
+    { prisma, userInfo }: Context
   ): Promise<PostPayload> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: "Forbidden access",
+          },
+        ],
+        post: null,
+      };
+    }
+
     const { title, content } = post;
     if (!title || !content) {
       return {
@@ -22,7 +34,7 @@ export default {
       data: {
         title,
         content,
-        authorId: 1,
+        authorId: userInfo.userId,
         updatedAt: new Date(),
       },
     });
@@ -36,10 +48,26 @@ export default {
   postUpdate: async (
     _: any,
     { postId, post }: { postId: string; post: PostArgs["post"] },
-    { prisma }: Context
+    { prisma, userInfo }: Context
   ): Promise<PostPayload> => {
-    const { title, content } = post;
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: "Forbidden access",
+          },
+        ],
+        post: null,
+      };
+    }
+    const error = await canUserMutatePost({
+      userId: userInfo.userId,
+      postId: Number(postId),
+      prisma,
+    });
+    if (error) return error;
 
+    const { title, content } = post;
     if (!title && !content) {
       return {
         userErrors: [{ message: "Need to have at least on field to update" }],
@@ -75,8 +103,25 @@ export default {
   postDelete: async (
     _: any,
     { postId }: { postId: string },
-    { prisma }: Context
+    { prisma, userInfo }: Context
   ): Promise<PostPayload> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: "Forbidden access",
+          },
+        ],
+        post: null,
+      };
+    }
+    const error = await canUserMutatePost({
+      userId: userInfo.userId,
+      postId: Number(postId),
+      prisma,
+    });
+    if (error) return error;
+
     const existingPost = await prisma.post.findUnique({
       where: {
         id: Number(postId),
